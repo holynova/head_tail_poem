@@ -28,18 +28,18 @@ const tailModules = import.meta.glob("../common/dict/tail/*.json");
 const loadChosenDicts = (isHead = true, names: string[]) => {
   let pList = names.map((x) => {
     let fullName = getModuleFullName(isHead, x);
-    if (isHead) {
-      return headModules[fullName]();
-    } else {
-      return tailModules[fullName]();
+    let moduleDict = isHead ? headModules : tailModules;
+    if (typeof moduleDict[fullName] === "function") {
+      return moduleDict[fullName]();
     }
+    return Promise.reject(new Error(`${fullName}不存在`));
   });
-
-  return Promise.all(pList).then((arr) => {
+  return Promise.allSettled(pList).then((arr) => {
     let dict: HeadTailDict = {};
-    arr.forEach((module, index) => {
+    arr.forEach((promiseResult, index) => {
       let key = names[index];
-      dict[key] = module.default;
+      if (promiseResult.status === "fulfilled")
+        dict[key] = promiseResult.value.default;
     });
     return dict;
   });
@@ -120,7 +120,7 @@ function PoemPage() {
         }
       );
     },
-    [position]
+    [position, size]
   );
 
   const onChangeRow = (index: number) => {
@@ -150,11 +150,34 @@ function PoemPage() {
         // @ts-ignore
         let myDict: PoemDictModel = poemDict;
         let poem = myDict[row.poemId];
-        return `---[${poem.dynasty}] ${poem.author || "佚名"} <${poem.title}>`;
+        return `[${poem.dynasty}] ${poem.author || "佚名"} <${poem.title}>`;
       } else {
         return null;
       }
     };
+    const sourcePart = (
+      <div>
+        <span className="source">{getSource(row)}</span>
+        <div>
+          {row.count > 1 ? (
+            <Button
+              onClick={() => {
+                onChangeRow(index);
+              }}
+              // fill="none"
+            >{`换一首 (共${row.count}首) `}</Button>
+          ) : // <span
+          //   className="change-button"
+          //   onClick={() => {
+          //     onChangeRow(index);
+          //   }}
+          // >
+          //   {`换一个(共${row.count}首)`}
+          // </span>
+          null}
+        </div>
+      </div>
+    );
     return (
       <List.Item key={index}>
         <div className="poem-row">
@@ -165,19 +188,8 @@ function PoemPage() {
           <span className={`head ${position[0] === "TAIL" ? "highlight" : ""}`}>
             {tail}
           </span>
-
-          <span className="source">{getSource(row)}</span>
-          {row.count > 1 ? (
-            <span
-              className="change-button"
-              onClick={() => {
-                onChangeRow(index);
-              }}
-            >
-              {`换一个(共${row.count}首)`}
-            </span>
-          ) : null}
         </div>
+        {sourcePart}
       </List.Item>
     );
   };
@@ -202,8 +214,8 @@ function PoemPage() {
               onChange={setSize}
               columns={2}
               options={[
-                { label: "七言律诗", value: 7 },
-                { label: "五言绝句", value: 5 },
+                { label: "七律", value: 7 },
+                { label: "五绝", value: 5 },
               ]}
             ></Selector>
           </List.Item>
