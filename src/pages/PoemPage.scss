@@ -1,0 +1,71 @@
+.PoemPage{
+  *{
+    transition: all .2s ease;
+  }
+  .title{
+    font-size: 22px;
+    font-weight: bold;
+    text-align: center;
+    padding:8px;
+  }
+  pre{
+    font-size: 8px;
+    background: #ccc;
+    max-height: 400px;
+    overflow: auto;
+  }
+  .form-item {
+    padding:4px 0;
+  }
+  .result{
+    background: #eee;
+    padding: 8px 0;
+    // line-height: 3;
+    .title{
+      font-size: 24px;
+      text-align: center;
+    }
+    .author{
+      text-align: center;
+    }
+    .poem-row{
+      display: flex;
+      padding: 8px;
+      .change-button{
+        justify-self: end;
+        flex:1;
+        display: none;
+        cursor: pointer;
+        color: blue;
+        font-size: 12px;
+        padding: 0 8px;
+        // background: pink;
+        text-align: right;
+      }
+      &:hover{
+        background-color: #fff;
+        & .change-button{
+          display: inline;
+        }
+      }
+      .highlight{
+        font-weight: bold;
+        color:red;
+
+      }
+      .head{
+        // padding-right:1px;
+      }
+      .tail{
+        // font-weight: bold;
+        // padding-right:1px;
+      }
+      .source {
+        font-size: 10px;
+        padding-left:8px;
+        color:#333;
+      }
+    
+    }
+  }
+}
