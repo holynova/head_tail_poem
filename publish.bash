@@ -12,4 +12,4 @@ echo '完成编译和发布'
 
 end=$(date +%s)
 take=$(( end - start ))
-echo Time taken to execute commands is ${take} seconds.
+echo 完成编译和发布, 耗时 ${take} 秒.
