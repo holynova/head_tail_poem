@@ -1,0 +1,1 @@
+var e=[{line:"\u8361\u6DA4\u653E\u60C5\u5FD7\uFF0C\u4F55\u4E3A\u81EA\u7ED3\u675F",poemId:"poem_20"},{line:"\u8361\u80F8\u751F\u66FE\u4E91\uFF0C\u51B3\u7726\u5165\u5F52\u9E1F",poemId:"poem_504"}];export{e as default};

@@ -1,0 +1,1 @@
+var e=[{line:"\xA0",poemId:"poem_38"},{line:"\xA0",poemId:"poem_61"},{line:"\xA0",poemId:"poem_196"},{line:"\xA0",poemId:"poem_201"},{line:"\xA0",poemId:"poem_565"},{line:"\xA0",poemId:"poem_571"}];export{e as default};

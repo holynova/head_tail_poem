@@ -1,0 +1,1 @@
+var e=[{line:"\u6591\u9A93\u53EA\u7CFB\u5782\u6768\u5CB8\uFF0C\u4F55\u5904\u897F\u5357\u4EFB\u597D\u98CE",poemId:"poem_451"}];export{e as default};

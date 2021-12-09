@@ -1,0 +1,1 @@
+var e=[{line:"\u5F7C\u5C14\u7EF4\u4F55",poemId:"poem_1"},{line:"\u5F7C\u8DEF\u65AF\u4F55",poemId:"poem_1"},{line:"\u5F7C\u541B\u5B50\u516E\uFF0C\u4E0D\u7D20\u9910\u516E",poemId:"poem_12"},{line:"\u5F7C\u541B\u5B50\u516E\uFF0C\u4E0D\u7D20\u98DF\u516E",poemId:"poem_12"},{line:"\u5F7C\u541B\u5B50\u516E\uFF0C\u4E0D\u7D20\u98E7\u516E",poemId:"poem_12"}];export{e as default};
