@@ -1,3 +1,6 @@
+
+start=$(date +%s)
+
 rm -rf docs/  
 mkdir docs 
 npm run build  
@@ -6,3 +9,7 @@ git add .
 git commit -m 'rebuild to publish' 
 git push
 echo '完成编译和发布'
+
+end=$(date +%s)
+take=$(( end - start ))
+echo Time taken to execute commands is ${take} seconds.
