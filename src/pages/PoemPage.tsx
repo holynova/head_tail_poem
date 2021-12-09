@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 
 import Input from "antd-mobile/es/components/input";
 import Button from "antd-mobile/es/components/button";
@@ -10,11 +10,18 @@ import poemDict from "../common/dict/poem.json";
 const log = console.log.bind(console);
 import * as rand from "../utils/rand";
 import "./PoemPage.scss";
-import { HeadTailDict, HeadTailItem, PoemDictItemModel } from "./poem";
+import {
+  HeadTailDict,
+  HeadTailItem,
+  PoemDictItemModel,
+  PoemDictModel,
+  ResultRowModel,
+} from "./poem";
 
 function getModuleFullName(isHead = true, name = "*") {
   return `../common/dict/${isHead ? "head" : "tail"}/${name}.json`;
 }
+
 const headModules = import.meta.glob("../common/dict/head/*.json");
 const tailModules = import.meta.glob("../common/dict/tail/*.json");
 
@@ -38,13 +45,15 @@ const loadChosenDicts = (isHead = true, names: string[]) => {
   });
 };
 
+log("dict", { poemDict, type: typeof poemDict });
+
 function PoemPage() {
   let [size, setSize] = useState([7]);
   let [position, setPosition] = useState(["HEAD"]);
   let [keyWord, setKeyWord] = useState("清风明月水落石出");
-  let [rows, setRows] = useState<string[]>([]);
+  let [rows, setRows] = useState<ResultRowModel[]>([]);
 
-  const genRandomRowData = (resultList) => {
+  const genRandomRowData = (resultList: HeadTailItem[]): ResultRowModel => {
     let count = resultList.length;
     let randomIndex = rand.between(0, count);
     let row = resultList[randomIndex];
@@ -59,39 +68,62 @@ function PoemPage() {
 
   const composePoem = useCallback(
     (word = "", length = 7) => {
-      let res: string[] = [];
+      let res: ResultRowModel[] = [];
       let input: string = word.trim();
       if (!input) {
         return;
       }
-      log("compose", { word, input, length });
-      loadChosenDicts(position[0] !== "TAIL", input.split("")).then((dict) => {
-        log("allDict", dict);
-        input.split("").forEach((char) => {
-          let found = dict[char];
-          let lengthDict = {};
-          // let countDict = {}
-          const notFoundData = { line: "翻遍字典没找到，你快过来自己编" };
-          if (!found) {
-            res.push(notFoundData);
-          } else {
-            found.forEach((item) => {
-              let len = (item.line.length - 1) / 2;
-              let current = lengthDict[len];
-              lengthDict[len] = current ? [...current, item] : [item];
-            });
-            let results = lengthDict[length];
-            let rowData = results ? genRandomRowData(results) : notFoundData;
-            res.push(rowData);
-          }
-        });
-        setRows(res);
-      });
+      // log("compose", { word, input, length });
+      loadChosenDicts(position[0] !== "TAIL", input.split("")).then(
+        (mergedHeadTailDict) => {
+          input.split("").forEach((char) => {
+            let found: HeadTailItem[] = mergedHeadTailDict[char];
+
+            // let countDict = {}
+            const notFoundData: ResultRowModel = {
+              line: "翻遍字典没找到，你快过来自己编",
+              poemId: "",
+              alter: [],
+              count: 0,
+              index: 0,
+            };
+            if (!found) {
+              res.push(notFoundData);
+            } else {
+              interface LengthDictModel {
+                [key: string]: HeadTailItem[];
+              }
+              // 将找到的诗句, 根据字数来放到字典里, 以便区分五言, 七言等
+              // key 为字数, value 为诗句
+              const groupByLengthDict: LengthDictModel = found.reduce(
+                (pre, cur, index) => {
+                  let res: LengthDictModel = { ...pre };
+                  // 减去中间的标点1个字符, 再除以二, 就是半句的长度
+                  let key: string = `${Math.floor((cur.line.length - 1) / 2)}`;
+                  if (key in res) {
+                    res[key] = [...res[key], cur];
+                  } else {
+                    res[key] = [cur];
+                  }
+                  return res;
+                },
+                {}
+              );
+
+              let results = groupByLengthDict[`${length}`];
+              let rowData = results ? genRandomRowData(results) : notFoundData;
+              // log("debug", { lengthDict, rowData, found });
+              res.push(rowData);
+            }
+          });
+          setRows(res);
+        }
+      );
     },
     [position]
   );
 
-  const onChangeRow = (index) => {
+  const onChangeRow = (index: number) => {
     setRows((prevRows) => {
       const { alter, index: prevIndex } = prevRows[index];
       let i = 0;
@@ -108,14 +140,16 @@ function PoemPage() {
     });
   };
 
-  const renderRow = (row, index) => {
+  const renderRow = (row: ResultRowModel, index: number) => {
     let charList = row.line.split("");
     let tail = charList.pop();
     let head = charList.shift();
     let middle = charList.join("");
-    let getSource = (row) => {
+    let getSource = (row: ResultRowModel) => {
       if (row && row.poemId) {
-        let poem = poemDict[row.poemId];
+        // @ts-ignore
+        let myDict: PoemDictModel = poemDict;
+        let poem = myDict[row.poemId];
         return `---[${poem.dynasty}] ${poem.author || "佚名"} <${poem.title}>`;
       } else {
         return null;
@@ -148,9 +182,9 @@ function PoemPage() {
     );
   };
 
-  // useEffect(() => {
-  //   composePoem(keyWord, 7)
-  // }, [composePoem, keyWord])
+  useEffect(() => {
+    composePoem(keyWord, 7);
+  }, [composePoem, keyWord]);
 
   return (
     <div className="PoemPage">
@@ -196,7 +230,7 @@ function PoemPage() {
 
       <div className="result">
         <div className="title">{keyWord}</div>
-        <div className="author">李白</div>
+        {/* <div className="author">李白</div> */}
         <List>{rows.map((row, index) => renderRow(row, index))}</List>
       </div>
       {/* <pre>

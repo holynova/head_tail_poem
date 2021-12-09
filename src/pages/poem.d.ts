@@ -17,3 +17,9 @@ export interface PoemDictModel {
 export interface HeadTailDict {
   [key: string]: HeadTailItem[];
 }
+
+export interface ResultRowModel extends HeadTailItem {
+  alter: HeadTailItem[];
+  count: number;
+  index: number;
+}
