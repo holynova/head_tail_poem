@@ -12,7 +12,7 @@ export function int(min = 0, max = 100) {
   // return min + Math.floor(Math.random() * (max - min))
 }
 
-export function choose(arr = []) {
+export function choose(arr: any[] = []) {
   let index = between(0, arr.length);
   return arr[index];
 }

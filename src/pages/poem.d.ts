@@ -23,3 +23,9 @@ export interface ResultRowModel extends HeadTailItem {
   count: number;
   index: number;
 }
+
+export interface RowDataModel {
+  position: number | string;
+  char: string;
+  results: HeadTailItem[];
+}
