@@ -15,7 +15,7 @@ interface Props {
   onChange: (res: string) => void;
 }
 
-const getSource = (row: HeadTailItem) => {
+const getSource = (row: HeadTailItem | undefined) => {
   if (row && row.poemId) {
     // @ts-ignore
     const poem = poemDict[row.poemId];
