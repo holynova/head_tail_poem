@@ -4,13 +4,16 @@ import Input from "antd-mobile/es/components/input";
 import Button from "antd-mobile/es/components/button";
 import Selector from "antd-mobile/es/components/selector";
 import List from "antd-mobile/es/components/list";
+import Toast from "antd-mobile/es/components/toast";
 
 import { Space } from "_antd-mobile@5.0.0-rc.3@antd-mobile";
 import "./PoemPage.scss";
+import { CopyToClipboard } from "react-copy-to-clipboard";
 import { HeadTailDict, HeadTailItem, RowDataModel } from "./poem.d";
 
 import PoemRow from "./components/PoemRow";
 import Author from "../common/components/Author";
+import DebugPanel from "../common/components/DebugPanel";
 
 function getModuleFullName(isHead = true, name = "*") {
   return `../common/dict/${isHead ? "head" : "tail"}/${name}.json`;
@@ -49,7 +52,12 @@ const PoemPage = function () {
   const [position, setPosition] = useState(["HEAD"]);
   const [keyWord, setKeyWord] = useState("清风明月水落石出");
   const [rows, setRows] = useState<RowDataModel[]>([]);
+  const [lines, setLines] = useState<string[]>([]);
   const [sourceVisible, setSourceVisible] = useState(true);
+
+  useEffect(() => {
+    setLines(new Array(keyWord.length).fill(""));
+  }, [keyWord]);
 
   const composePoem = useCallback(
     (word = "", length = 7) => {
@@ -99,11 +107,8 @@ const PoemPage = function () {
                 {},
               );
 
-              const results = groupByLengthDict[`${length}`];
-              // let rowData = results ? genRandomRowData(results) : notFoundData;
-              // log("debug", { lengthDict, rowData, found });
-              // let rowData = results || [];
-              currentRowData.results = results || [];
+              currentRowData.results =
+                groupByLengthDict[`${length || 7}`] || [];
             }
             rowDataList.push(currentRowData);
           });
@@ -117,6 +122,32 @@ const PoemPage = function () {
   useEffect(() => {
     composePoem(keyWord, size[0]);
   }, [composePoem, keyWord, size]);
+
+  const content = React.useMemo(() => {
+    const onRowChange = (str: string, index: number) => {
+      setLines((prev) => {
+        const clone = [...prev];
+        clone[index] = str;
+        return clone;
+      });
+    };
+    return rows.map((x, index) => (
+      <PoemRow
+        key={index}
+        data={x}
+        sourceVisible={sourceVisible}
+        onChange={(str) => onRowChange(str, index)}
+      />
+    ));
+  }, [rows, sourceVisible]);
+
+  const fullPoem = React.useMemo(
+    () => [keyWord, ...lines].join("\n"),
+    [keyWord, lines],
+  );
+  const onCopy = useCallback(() => {
+    Toast.show("复制成功");
+  }, []);
 
   return (
     <div className="PoemPage">
@@ -157,12 +188,13 @@ const PoemPage = function () {
             <Button {...buttonProps} onClick={() => composePoem(keyWord, size)}>
               刷新
             </Button>
-            <Button {...buttonProps} onClick={1}>
-              复制
-            </Button>
-            <Button {...buttonProps} onClick={2}>
+            <CopyToClipboard text={fullPoem} onCopy={onCopy}>
+              <Button {...buttonProps}>复制</Button>
+            </CopyToClipboard>
+
+            {/* <Button {...buttonProps} onClick={2}>
               截图
-            </Button>
+            </Button> */}
             <Button
               {...buttonProps}
               onClick={() => setSourceVisible((prev) => !prev)}
@@ -176,14 +208,11 @@ const PoemPage = function () {
       <div className="result">
         <div className="title">{keyWord}</div>
         {/* <div className="author">李白</div> */}
-        <List>
-          {rows.map((x, index) => (
-            <PoemRow key={index} data={x} sourceVisible={sourceVisible} />
-          ))}
-        </List>
+        <List>{content}</List>
       </div>
 
       <Author />
+      {/* <DebugPanel data={{ results: lines }} /> */}
       {/* <pre>
         {JSON.stringify({ size, keyWord, position }, null, 2)}
       </pre> */}

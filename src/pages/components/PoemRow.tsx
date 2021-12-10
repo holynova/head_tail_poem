@@ -12,6 +12,7 @@ import { choose } from "../../utils/rand";
 interface Props {
   data: RowDataModel;
   sourceVisible: boolean;
+  onChange: (res: string) => void;
 }
 
 const getSource = (row: HeadTailItem) => {
@@ -31,27 +32,21 @@ const getSource = (row: HeadTailItem) => {
 // };
 
 const PoemRow: React.FC<Props> = function (props) {
-  const { data, sourceVisible } = props;
-  // const [loading, setLoading] = useState(false)
+  const { data, sourceVisible, onChange } = props;
   const [poem, setPoem] = useState<HeadTailItem>();
-  // const [folded, setFolded] = useState(true);
-  // const [current, setCurrent] = useState(-1);
-  // const toggle = useCallback(() => {
-  //   setFolded((prev) => !prev);
-  // }, []);
 
-  // useEffect(() => {
-  //   setFolded(true);
-  // }, [props.data]);
-
-  // const pickOne = useCallback(() => {}, []);
   const len = data?.results?.length || 0;
   useEffect(() => {
     setPoem(len === 1 ? data.results[0] : choose(data?.results));
   }, [len, data]);
 
+  useEffect(() => {
+    if (typeof onChange === "function") {
+      onChange(poem?.line || "");
+    }
+  }, [poem, onChange]);
+
   const refresh = useCallback(() => {
-    // setPoem((prev) => {});
     setPoem((prev) => {
       console.time("refresh");
       const start = Date.now();
@@ -90,18 +85,6 @@ const PoemRow: React.FC<Props> = function (props) {
           positions={data.position === "TAIL" ? [-1] : [0]}
         />
       </div>
-      {/* {folded ? null : (
-        <div>
-          <div className="source-part" style={styles.source}>
-            {source}
-          </div>
-          {len === 1 ? null : (
-            <div className="refresh-part">
-              <Button>换一首</Button>
-            </div>
-          )}
-        </div>
-      )} */}
     </List.Item>
   );
 };
