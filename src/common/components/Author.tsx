@@ -1,16 +1,10 @@
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-  useMemo,
-} from "react";
+import React from "react";
 // import {} from "antd";
 // import './Author.less'
 // import  {log} from ''
 interface Props {}
 
-const Author: React.FC<Props> = (props) => {
+const Author: React.FC<Props> = function () {
   // const [loading, setLoading] = useState(false)
   return (
     <div className="Author" style={{ textAlign: "center" }}>
