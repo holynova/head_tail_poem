@@ -18,11 +18,10 @@ interface Props {
 const getSource = (row: HeadTailItem) => {
   if (row && row.poemId) {
     // @ts-ignore
-    const myDict: PoemDictModel = poemDict;
-    const poem = myDict[row.poemId];
+    const poem = poemDict[row.poemId];
     return `[${poem.dynasty}] ${poem.author || "佚名"} <${poem.title}>`;
   }
-  return null;
+  return "";
 };
 // const styles: { [key: string]: CSS.Properties } = {
 //   source: {
@@ -48,7 +47,7 @@ const PoemRow: React.FC<Props> = function (props) {
 
   const refresh = useCallback(() => {
     setPoem((prev) => {
-      console.time("refresh");
+      // console.time("refresh");
       const start = Date.now();
       let res = prev;
       while (Date.now() - start < 1000) {
@@ -58,7 +57,7 @@ const PoemRow: React.FC<Props> = function (props) {
           break;
         }
       }
-      console.timeEnd("refresh");
+      // console.timeEnd("refresh");
       return res;
     });
   }, [data.results]);
