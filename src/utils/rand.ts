@@ -13,7 +13,7 @@ export function int(min = 0, max = 100) {
 }
 
 export function choose(arr: any[] = []) {
-  let index = between(0, arr.length);
+  const index = between(0, arr.length);
   return arr[index];
 }
 
@@ -25,11 +25,12 @@ export function timestamp(min = 0, max: number = Date.now()) {
 
 export function shuffle(arr: any[]) {
   if (Array.isArray(arr)) {
-    for (let i = arr.length - 1; i > 0; i--) {
-      let index = between(0, i);
-      let temp = arr[i];
-      arr[i] = arr[index];
-      arr[index] = temp;
+    for (let i = arr.length - 1; i > 0; i -= 1) {
+      const index = between(0, i);
+      [arr[i], arr[index]] = [arr[index], arr[i]];
+      // const temp = arr[i];
+      // arr[i] = arr[index];
+      // arr[index] = temp;
     }
   }
   return arr;

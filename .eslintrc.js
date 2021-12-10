@@ -5,6 +5,7 @@ module.exports = {
   },
   extends: ["plugin:react/recommended", "airbnb"],
   parser: "@typescript-eslint/parser",
+  // files: ["*.ts", "*.tsx", "*.ts", "*.js"],
   parserOptions: {
     ecmaFeatures: {
       jsx: true,
@@ -17,5 +18,7 @@ module.exports = {
     quotes: 0,
     "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "error",
+    "react/jsx-filename-extension": 0,
+    "react/jsx-props-no-spreading": 0,
   },
 };

@@ -1,79 +1,63 @@
-import React, {
-  useState,
-  useCallback,
-  useEffect,
-  useRef,
-  useMemo,
-} from "react";
+import React, { useState, useCallback, useEffect } from "react";
 //  import {} from 'antd'
 // import './PoemRow.less'
 // import  {log} from ''
 import { RedoOutline } from "antd-mobile-icons";
 import List from "antd-mobile/es/components/list";
-import DebugPanel from "../../common/components/DebugPanel";
-import Button from "_antd-mobile@5.0.0-rc.3@antd-mobile/es/components/button";
 import { HeadTailItem, RowDataModel } from "../poem";
 import poemDict from "../../common/dict/poem.json";
 import HighlightString from "./HighlightString";
-import { between, choose } from "../../utils/rand";
-import CSS from "csstype";
+import { choose } from "../../utils/rand";
 
 interface Props {
   data: RowDataModel;
   sourceVisible: boolean;
 }
 
-let getSource = (row: HeadTailItem) => {
+const getSource = (row: HeadTailItem) => {
   if (row && row.poemId) {
     // @ts-ignore
-    let myDict: PoemDictModel = poemDict;
-    let poem = myDict[row.poemId];
+    const myDict: PoemDictModel = poemDict;
+    const poem = myDict[row.poemId];
     return `[${poem.dynasty}] ${poem.author || "佚名"} <${poem.title}>`;
-  } else {
-    return null;
   }
+  return null;
 };
-const styles: { [key: string]: CSS.Properties } = {
-  source: {
-    fontSize: "12px",
-    textAlign: "center",
-  },
-};
+// const styles: { [key: string]: CSS.Properties } = {
+//   source: {
+//     fontSize: "12px",
+//     textAlign: "center",
+//   },
+// };
 
-const PoemRow: React.FC<Props> = (props) => {
+const PoemRow: React.FC<Props> = function (props) {
+  const { data, sourceVisible } = props;
   // const [loading, setLoading] = useState(false)
   const [poem, setPoem] = useState<HeadTailItem>();
-  const [folded, setFolded] = useState(true);
-  const [current, setCurrent] = useState(-1);
-  const toggle = useCallback(() => {
-    setFolded((prev) => !prev);
-  }, []);
+  // const [folded, setFolded] = useState(true);
+  // const [current, setCurrent] = useState(-1);
+  // const toggle = useCallback(() => {
+  //   setFolded((prev) => !prev);
+  // }, []);
 
-  useEffect(() => {
-    setFolded(true);
-  }, [props.data]);
+  // useEffect(() => {
+  //   setFolded(true);
+  // }, [props.data]);
 
   // const pickOne = useCallback(() => {}, []);
-  const len = props.data?.results?.length || 0;
-  if (len === 0) {
-    return (
-      <List.Item>
-        <HighlightString
-          str={`${props.data.char}: 翻遍字典, 没找到答案`}
-          positions={[0]}
-        ></HighlightString>
-      </List.Item>
-    );
-  }
+  const len = data?.results?.length || 0;
+  useEffect(() => {
+    setPoem(len === 1 ? data.results[0] : choose(data?.results));
+  }, [len, data]);
 
   const refresh = useCallback(() => {
     // setPoem((prev) => {});
     setPoem((prev) => {
       console.time("refresh");
-      let start = Date.now();
+      const start = Date.now();
       let res = prev;
       while (Date.now() - start < 1000) {
-        let newPoem = choose(props.data?.results);
+        const newPoem = choose(data?.results);
         if (newPoem?.line !== prev?.line) {
           res = newPoem;
           break;
@@ -82,24 +66,29 @@ const PoemRow: React.FC<Props> = (props) => {
       console.timeEnd("refresh");
       return res;
     });
-  }, []);
-
-  useEffect(() => {
-    setPoem(len === 1 ? props.data.results[0] : choose(props.data?.results));
-  }, [len, props.data]);
+  }, [data.results]);
 
   // const poem = len === 1 ? props.data.results[0] : choose(props.data?.results);
-
+  if (len === 0) {
+    return (
+      <List.Item>
+        <HighlightString
+          str={`${data.char}: 翻遍字典, 没找到答案`}
+          positions={[0]}
+        />
+      </List.Item>
+    );
+  }
   return (
     <List.Item
-      description={props.sourceVisible ? getSource(poem) : false}
-      extra={len > 1 ? <RedoOutline onClick={refresh}></RedoOutline> : null}
+      description={sourceVisible ? getSource(poem) : false}
+      extra={len > 1 ? <RedoOutline onClick={refresh} /> : null}
     >
       <div className="line-part">
         <HighlightString
           str={poem?.line || ""}
-          positions={props.data.position === "TAIL" ? [-1] : [0]}
-        ></HighlightString>
+          positions={data.position === "TAIL" ? [-1] : [0]}
+        />
       </div>
       {/* {folded ? null : (
         <div>

@@ -11,29 +11,27 @@ import CSS from "csstype";
 // import  {log} from ''
 interface Props {
   str: string;
-  positions: number[]; //可以接受负数
+  positions: number[]; // 可以接受负数
   highlightStyle?: CSS.Properties;
 }
 
-const HighlightString: React.FC<Props> = (props) => {
+const HighlightString: React.FC<Props> = function ({
+  str,
+  positions,
+  highlightStyle = { color: "red" },
+}) {
   // const [loading, setLoading] = useState(false)
-  if (!props?.str) {
+  if (!str) {
     return null;
   }
   return (
     <span className="HighlightString">
       {/* <h3>HighlightString</h3> */}
-      {props?.str?.split("").map((c, index) => {
-        const positions = props.positions.map((x) => {
-          return x < 0 ? x + props.str.length : x;
-        });
-        if (positions?.includes(index)) {
+      {str?.split("").map((c, index) => {
+        const posList = positions.map((x) => (x < 0 ? x + str.length : x));
+        if (posList?.includes(index)) {
           return (
-            <span
-              key={index}
-              className="highlight"
-              style={props?.highlightStyle || { color: "red" }}
-            >
+            <span key={index} className="highlight" style={highlightStyle}>
               {c}
             </span>
           );

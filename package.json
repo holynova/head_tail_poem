@@ -5,7 +5,7 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint src/**/*.js src/**/*.jsx src/**/*.tsx -c .eslintrc.js --fix --no-error-on-unmatched-pattern"
+    "lint": "eslint src/**/*.js src/**/*.jsx src/**/*.tsx src/**/*.ts --no-error-on-unmatched-pattern"
   },
   "dependencies": {
     "antd-mobile": "^5.0.0-rc.3",

@@ -7,7 +7,7 @@ import List from "antd-mobile/es/components/list";
 
 import { Space } from "_antd-mobile@5.0.0-rc.3@antd-mobile";
 import "./PoemPage.scss";
-import { HeadTailDict, HeadTailItem, RowDataModel } from "./poem";
+import { HeadTailDict, HeadTailItem, RowDataModel } from "./poem.d";
 
 import PoemRow from "./components/PoemRow";
 import Author from "../common/components/Author";
@@ -19,7 +19,7 @@ function getModuleFullName(isHead = true, name = "*") {
 const headModules = import.meta.glob("../common/dict/head/*.json");
 const tailModules = import.meta.glob("../common/dict/tail/*.json");
 
-const loadChosenDicts = (isHead = true, names: string[]) => {
+const loadChosenDicts = (isHead = true, names: string[] = []) => {
   const pList = names.map((x) => {
     const fullName = getModuleFullName(isHead, x);
     const moduleDict = isHead ? headModules : tailModules;
@@ -32,8 +32,9 @@ const loadChosenDicts = (isHead = true, names: string[]) => {
     const dict: HeadTailDict = {};
     arr.forEach((promiseResult, index) => {
       const key = names[index];
-      if (promiseResult.status === "fulfilled")
+      if (promiseResult.status === "fulfilled") {
         dict[key] = promiseResult.value.default;
+      }
     });
     return dict;
   });
@@ -86,7 +87,7 @@ const PoemPage = function () {
                   const res: LengthDictModel = { ...pre };
                   // 减去中间的标点1个字符, 再除以二, 就是半句的长度
                   const key: string = `${Math.floor(
-                    (cur.line.length - 1) / 2
+                    (cur.line.length - 1) / 2,
                   )}`;
                   if (key in res) {
                     res[key] = [...res[key], cur];
@@ -95,7 +96,7 @@ const PoemPage = function () {
                   }
                   return res;
                 },
-                {}
+                {},
               );
 
               const results = groupByLengthDict[`${length}`];
@@ -107,10 +108,10 @@ const PoemPage = function () {
             rowDataList.push(currentRowData);
           });
           setRows(rowDataList);
-        }
+        },
       );
     },
-    [position, size]
+    [position],
   );
 
   useEffect(() => {
