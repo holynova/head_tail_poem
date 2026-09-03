@@ -3,7 +3,7 @@ start=$(date +%s)
 
 rm -rf docs/  
 mkdir docs 
-npm run build  
+pnpm run build:pages
 cp -R dist/* docs 
 git add . 
 git commit -m 'rebuild to publish' 

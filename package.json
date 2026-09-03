@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc && vite build --mode cloudflare",
+    "build:pages": "tsc && vite build --mode pages",
     "preview": "vite preview",
     "lint": "eslint src/**/*.js src/**/*.jsx src/**/*.tsx src/**/*.ts --no-error-on-unmatched-pattern"
   },

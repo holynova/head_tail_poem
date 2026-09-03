@@ -6,7 +6,7 @@ import Selector from "antd-mobile/es/components/selector";
 import List from "antd-mobile/es/components/list";
 import Toast from "antd-mobile/es/components/toast";
 
-import { Space } from "_antd-mobile@5.0.0-rc.3@antd-mobile";
+import Space from "antd-mobile/es/components/space";
 import "./PoemPage.scss";
 import { CopyToClipboard } from "react-copy-to-clipboard";
 import { HeadTailDict, HeadTailItem, RowDataModel } from "./poem.d";
