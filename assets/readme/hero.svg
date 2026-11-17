@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200" height="360" viewBox="0 0 1200 360"
+     role="img" aria-labelledby="title desc">
+  <title id="title">藏头诗生成器 — Head &amp; Tail Poem Generator</title>
+  <desc id="desc">暖纸底书法风：藏头诗生成器；右侧四列竖排诗句，每列首字用朱红标出——清、风、明、月，藏头一目了然。</desc>
+
+  <rect width="1200" height="360" rx="26" fill="#f6f0e2"/>
+
+  <g id="title-block" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">
+    <text x="56" y="62" font-size="19" letter-spacing="3" fill="#6b5c40">古诗拼贴 · ACROSTIC &amp; TELESTICH POEMS</text>
+    <text x="56" y="128" font-size="62" font-weight="700" fill="#2b2620">藏头诗生成器</text>
+    <text x="56" y="168" font-size="23" fill="#5a4f3e">HEAD &amp; TAIL POEM — 输入名字，古诗替你藏头</text>
+    <text x="56" y="204" font-size="19" fill="#7a6c54">逐字取古诗句，藏头藏尾、七律五绝，每句带出处。</text>
+    <g id="chips" font-size="18" fill="#2b2620" text-anchor="middle">
+      <g><rect x="56" y="238" width="126" height="36" rx="18" fill="#efe7d3" stroke="#d8cbb0" stroke-width="1.5"/><text x="119" y="262">599 首古诗</text></g>
+      <g><rect x="194" y="238" width="150" height="36" rx="18" fill="#efe7d3" stroke="#d8cbb0" stroke-width="1.5"/><text x="269" y="262">936 藏头字</text></g>
+      <g><rect x="356" y="238" width="150" height="36" rx="18" fill="#efe7d3" stroke="#d8cbb0" stroke-width="1.5"/><text x="431" y="262">968 藏尾字</text></g>
+      <g><rect x="518" y="238" width="150" height="36" rx="18" fill="#efe7d3" stroke="#d8cbb0" stroke-width="1.5"/><text x="593" y="262">七律 · 五绝</text></g>
+    </g>
+  </g>
+
+  <g id="poem-motif" font-family="'Songti SC', 'STSong', 'SimSun', serif" font-size="26" text-anchor="middle">
+    <text x="830" y="52" font-size="18" fill="#6b5c40" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">首字连起来，就是你要藏的话</text>
+        <g>
+      <text x="830" y="100" fill="#b03a2e" font-weight="700">清</text>
+      <text x="830" y="134" fill="#2b2620">浊</text>
+      <text x="830" y="168" fill="#2b2620">东</text>
+      <text x="830" y="202" fill="#2b2620">流</text>
+      <text x="830" y="236" fill="#2b2620">剑</text>
+      <text x="830" y="270" fill="#2b2620">阁</text>
+      <text x="830" y="304" fill="#2b2620">深</text>
+      <text x="830" y="336" font-size="14" fill="#6b5c40" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">杜甫</text>
+    </g>
+    <g>
+      <text x="910" y="100" fill="#b03a2e" font-weight="700">风</text>
+      <text x="910" y="134" fill="#2b2620">急</text>
+      <text x="910" y="168" fill="#2b2620">天</text>
+      <text x="910" y="202" fill="#2b2620">高</text>
+      <text x="910" y="236" fill="#2b2620">猿</text>
+      <text x="910" y="270" fill="#2b2620">啸</text>
+      <text x="910" y="304" fill="#2b2620">哀</text>
+      <text x="910" y="336" font-size="14" fill="#6b5c40" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">杜甫</text>
+    </g>
+    <g>
+      <text x="990" y="100" fill="#b03a2e" font-weight="700">明</text>
+      <text x="990" y="134" fill="#2b2620">月</text>
+      <text x="990" y="168" fill="#2b2620">皎</text>
+      <text x="990" y="202" fill="#2b2620">皎</text>
+      <text x="990" y="236" fill="#2b2620">照</text>
+      <text x="990" y="270" fill="#2b2620">我</text>
+      <text x="990" y="304" fill="#2b2620">床</text>
+      <text x="990" y="336" font-size="14" fill="#6b5c40" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">曹丕</text>
+    </g>
+    <g>
+      <text x="1070" y="100" fill="#b03a2e" font-weight="700">月</text>
+      <text x="1070" y="134" fill="#2b2620">明</text>
+      <text x="1070" y="168" fill="#2b2620">船</text>
+      <text x="1070" y="202" fill="#2b2620">笛</text>
+      <text x="1070" y="236" fill="#2b2620">参</text>
+      <text x="1070" y="270" fill="#2b2620">差</text>
+      <text x="1070" y="304" fill="#2b2620">起</text>
+      <text x="1070" y="336" font-size="14" fill="#6b5c40" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Microsoft YaHei', sans-serif">秦观</text>
+    </g>
+        <!-- seal -->
+    <g transform="translate(1132 288)">
+      <rect x="-14" y="-14" width="28" height="28" rx="4" fill="#b03a2e"/>
+      <text x="0" y="7" font-size="18" fill="#f6f0e2" font-weight="700">诗</text>
+    </g>
+  </g>
+
+  <g id="top-bar"><rect x="0" y="0" width="1200" height="10" rx="5" fill="#b03a2e" opacity="0.85"/></g>
+</svg>
